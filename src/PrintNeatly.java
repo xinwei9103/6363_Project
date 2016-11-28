@@ -1,3 +1,12 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by xinweiwang on 11/26/16.
  */
@@ -23,59 +32,37 @@ public class PrintNeatly {
                 "the sample output, extra spaces added are shown as plus symbol. For this " +
                 "file, penalty with M=72 is 430, M=93 is 280, and, M=132 is 137.";
 
+        String[] strs = getStringArray("input.txt");
+        /*
         int length = input.split(" ").length;
         //System.out.println(length);
         int sum = 0;
-        for(int i=0;i<length;i++){
-            sum+=input.split(" ")[i].length()+1;
+        for (int i = 0; i < length; i++) {
+            sum += input.split(" ")[i].length() + 1;
             //System.out.println(input.split(" ")[i]);
         }
         //System.out.println(sum-1);
-        count(input.split(" "),132);
+        */
+        count(strs, 132);
+        print(strs);
 
-        int min = CANNOTREACH;
-        int index = -1;
-        for(int i=0;i<length;i++){
-            if(sumMatrix[length-1][i]<=min){
-                min = sumMatrix[length-1][i];
-                index = i;
-            }
-        }
-        System.out.println(min);
 
-        System.out.println(index);
-        System.out.println(currentLeftMatrix[length-1][index]);
-        System.out.println();
-        int lastIndex = lastMatrix[length-1][index];
-
-        System.out.println(lastIndex);
-        System.out.println(input.split(" ")[index-1]);
-        while(lastIndex!=-1){
-            System.out.println(currentLeftMatrix[index-1][lastIndex]);
-            System.out.println(input.split(" ")[index-1]);
-            int temp = lastIndex;
-            lastIndex = lastMatrix[index-1][lastIndex];
-            index = temp;
-            //System.out.println(lastIndex);
-        }
-
-        //printlnMatrix(sumMatrix);
     }
 
 
-    private static void printlnMatrix(int[][] matrix){
-        for(int i=0;i<matrix.length;i++){
-            for(int j= 0 ;j< matrix[i].length;j++){
-                System.out.print(matrix[i][j]+" ");
+    private static void printlnMatrix(int[][] matrix) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.print(matrix[i][j] + " ");
             }
             System.out.println();
         }
     }
 
-    private static void init(int length){
+    private static void init(int length) {
         sumMatrix = new int[length][length];
-        for(int j = 0;j<length;j++){
-            for(int i=0;i<length;i++){
+        for (int j = 0; j < length; j++) {
+            for (int i = 0; i < length; i++) {
                 sumMatrix[j][i] = CANNOTREACH;
             }
         }
@@ -83,18 +70,18 @@ public class PrintNeatly {
         currentLeftMatrix = new int[length][length];
     }
 
-    private static void count(String[] strs,int m){
-        if(strs.length==0){
+    private static void count(String[] strs, int m) {
+        if (strs.length == 0) {
             return;
         }
         init(strs.length);
-        sumMatrix[0][0]=0;
+        sumMatrix[0][0] = 0;
         currentLeftMatrix[0][0] = m - strs[0].length();
         lastMatrix[0][0] = -1;
 
-        for(int j=1;j<strs.length;j++){
-            for(int i=0;i<j;i++){
-                if(currentLeftMatrix[j-1][i]-1-strs[j].length()>=0) {
+        for (int j = 1; j < strs.length; j++) {
+            for (int i = 0; i < j; i++) {
+                if (currentLeftMatrix[j - 1][i] - 1 - strs[j].length() >= 0) {
                     sumMatrix[j][i] = sumMatrix[j - 1][i];
                     lastMatrix[j][i] = lastMatrix[j - 1][i];
                     currentLeftMatrix[j][i] = currentLeftMatrix[j - 1][i] - strs[j].length() - 1;
@@ -102,9 +89,9 @@ public class PrintNeatly {
             }
             int minIndex = -1;
             int min = CANNOTREACH;
-            for(int i=0;i<j;i++){
-                if(sumMatrix[j-1][i]<min){
-                    min=sumMatrix[j-1][i]+currentLeftMatrix[j-1][i];
+            for (int i = 0; i < j; i++) {
+                if (sumMatrix[j - 1][i] < min) {
+                    min = sumMatrix[j - 1][i] + currentLeftMatrix[j - 1][i];
                     minIndex = i;
                 }
             }
@@ -112,8 +99,108 @@ public class PrintNeatly {
             lastMatrix[j][j] = minIndex;
             currentLeftMatrix[j][j] = m - strs[j].length();
         }
+    }
 
+
+    private static String[] getStringArray(String fileName){
+        List<String> list = new ArrayList<>();
+        FileReader fileReader = null;
+        BufferedReader bufferedReader = null;
+        try {
+            fileReader = new FileReader(fileName);
+            bufferedReader = new BufferedReader(fileReader);
+            String line = null;
+            while((line = bufferedReader.readLine())!=null){
+                String[] strs = line.split("\\s+");
+                for(int i=0;i<strs.length;i++){
+                    list.add(strs[i]);
+                }
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if(bufferedReader!=null){
+                try {
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return list.toArray(new String[list.size()]);
 
     }
+
+    private static void print(String[] strs){
+        int length = strs.length;
+        int min = CANNOTREACH;
+        int lastIndex = -1;
+        for (int i = 0; i < length; i++) {
+            if (sumMatrix[length - 1][i] <= min) {
+                min = sumMatrix[length - 1][i];
+                lastIndex = i;
+            }
+        }
+
+        //System.out.println(index);
+        int index = length;
+        //System.out.println(currentLeftMatrix[index-1][lastIndex]);
+        //System.out.println(input.split(" ")[lastIndex - 1]);
+
+        //lastIndex = lastMatrix[index - 1][lastIndex];
+
+        //System.out.println(lastIndex);
+        //System.out.println(input.split(" ")[index - 1]);
+        ArrayList<Integer> newLine = new ArrayList<>();
+        ArrayList<Integer> numSpace = new ArrayList<>();
+
+
+
+        while (lastIndex != -1) {
+            newLine.add(index-1);
+            //System.out.println(index-1);
+            numSpace.add(currentLeftMatrix[index - 1][lastIndex]);
+            //System.out.println(strs[index - 1]);
+            int temp = lastIndex;
+            lastIndex = lastMatrix[index - 1][lastIndex];
+            index = temp;
+        }
+        numSpace.remove(0);
+        numSpace.add(0,0);
+        int sum = 0;
+        for(Integer n:numSpace){
+            sum+= Math.pow(n,3);
+        }
+        //System.out.println(numSpace.size());
+        //System.out.println(newLine.size());
+        System.out.println(sum);
+        System.out.println();
+        int j = newLine.size()-1;
+        int num = numSpace.get(j);
+        for(int i =0;i<strs.length;i++){
+            if(i == newLine.get(j)){
+                System.out.print(strs[i]);
+                System.out.println();
+                j--;
+                if(j>=0) {
+                    num = numSpace.get(j);
+                }
+            }else {
+                if(num>0) {
+                    System.out.print(strs[i] + " +");
+                    num--;
+                }else{
+                    System.out.print(strs[i]+" ");
+                }
+            }
+        }
+    }
+
+
+
 
 }
