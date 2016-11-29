@@ -1,7 +1,9 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * Created by xinweiwang on 11/26/16.
@@ -43,7 +45,7 @@ public class PrintNeatly {
 
 
         Scanner in;
-        int M = 80;
+        int M = 72;
         if (args.length > 0) {
             File inputFile = new File(args[0]);
             in = new Scanner(inputFile);
@@ -201,6 +203,10 @@ public class PrintNeatly {
         System.out.println();
         int j = newLine.size()-1;
         int num = numSpace.get(j);
+        Set<Integer> ramdonSet = new HashSet<>();
+        while(ramdonSet.size()<num){
+            ramdonSet.add((int)(Math.random()*(newLine.get(j))));
+        }
         for(int i =0;i<strs.length;i++){
             if(i == newLine.get(j)){
                 System.out.print(strs[i]);
@@ -208,11 +214,15 @@ public class PrintNeatly {
                 j--;
                 if(j>=0) {
                     num = numSpace.get(j);
+                    //ramdonSet = new HashSet<>();
+                    while(ramdonSet.size()<num){
+                        ramdonSet.add((int)(Math.random()*(newLine.get(j)-newLine.get(j+1)))+newLine.get(j+1));
+                    }
                 }
             }else {
-                if(num>0) {
+                if(ramdonSet.contains(i)) {
                     System.out.print(strs[i] + " +");
-                    num--;
+                    ramdonSet.remove(i);
                 }else{
                     System.out.print(strs[i]+" ");
                 }
