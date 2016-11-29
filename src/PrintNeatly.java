@@ -43,7 +43,7 @@ public class PrintNeatly {
 
 
         Scanner in;
-        int M = 132;
+        int M = 80;
         if (args.length > 0) {
             File inputFile = new File(args[0]);
             in = new Scanner(inputFile);
