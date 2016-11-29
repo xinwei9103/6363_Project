@@ -21,7 +21,7 @@ public class PrintNeatly {
     private static int[][] currentLeftMatrix;
 
     public static void main(String[] args) {
-
+        /*
         String input = "Output format: " +
                 "Your program should print its output to the console. " +
                 "In the first line of output, print the total penalty (sum of cubes of " +
@@ -31,6 +31,7 @@ public class PrintNeatly {
                 "within a line to make the output be left and right justified. In " +
                 "the sample output, extra spaces added are shown as plus symbol. For this " +
                 "file, penalty with M=72 is 430, M=93 is 280, and, M=132 is 137.";
+                */
 
         String[] strs = getStringArray("input.txt");
         /*
@@ -90,8 +91,8 @@ public class PrintNeatly {
             int minIndex = -1;
             int min = CANNOTREACH;
             for (int i = 0; i < j; i++) {
-                if (sumMatrix[j - 1][i] < min) {
-                    min = sumMatrix[j - 1][i] + currentLeftMatrix[j - 1][i];
+                if ((sumMatrix[j - 1][i] + (int)Math.pow(currentLeftMatrix[j - 1][i],3)) < min) {
+                    min = (sumMatrix[j - 1][i] + (int)Math.pow(currentLeftMatrix[j - 1][i],3));
                     minIndex = i;
                 }
             }
@@ -145,7 +146,7 @@ public class PrintNeatly {
                 lastIndex = i;
             }
         }
-
+        System.out.println(min);
         //System.out.println(index);
         int index = length;
         //System.out.println(currentLeftMatrix[index-1][lastIndex]);
@@ -171,13 +172,15 @@ public class PrintNeatly {
         }
         numSpace.remove(0);
         numSpace.add(0,0);
+        /*
         int sum = 0;
         for(Integer n:numSpace){
             sum+= Math.pow(n,3);
         }
+        */
         //System.out.println(numSpace.size());
         //System.out.println(newLine.size());
-        System.out.println(sum);
+        //System.out.println(sum);
         System.out.println();
         int j = newLine.size()-1;
         int num = numSpace.get(j);
