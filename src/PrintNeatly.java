@@ -209,15 +209,27 @@ public class PrintNeatly {
         }
         for(int i =0;i<strs.length;i++){
             if(i == newLine.get(j)){
+
                 System.out.print(strs[i]);
+
                 System.out.println();
+                //System.out.println(i);
+
+
                 j--;
                 if(j>=0) {
                     num = numSpace.get(j);
                     //ramdonSet = new HashSet<>();
+
                     while(ramdonSet.size()<num){
-                        ramdonSet.add((int)(Math.random()*(newLine.get(j)-newLine.get(j+1)))+newLine.get(j+1));
+                        ramdonSet.add((int)(Math.random()*(newLine.get(j)-newLine.get(j+1)-1))+newLine.get(j+1)+1);
                     }
+                    /*
+                    System.out.println(ramdonSet.size());
+                    for(Integer x:ramdonSet){
+                        System.out.println(x);
+                    }
+                    */
                 }
             }else {
                 if(ramdonSet.contains(i)) {
