@@ -1,11 +1,7 @@
-import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created by xinweiwang on 11/26/16.
@@ -20,7 +16,7 @@ public class PrintNeatly {
 
     private static int[][] currentLeftMatrix;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         /*
         String input = "Output format: " +
                 "Your program should print its output to the console. " +
@@ -33,7 +29,7 @@ public class PrintNeatly {
                 "file, penalty with M=72 is 430, M=93 is 280, and, M=132 is 137.";
                 */
 
-        String[] strs = getStringArray("input.txt");
+//        String[] strs = getStringArray("input.txt");
         /*
         int length = input.split(" ").length;
         //System.out.println(length);
@@ -44,10 +40,31 @@ public class PrintNeatly {
         }
         //System.out.println(sum-1);
         */
-        count(strs, 132);
+
+
+        Scanner in;
+        int M = 132;
+        if (args.length > 0) {
+            File inputFile = new File(args[0]);
+            in = new Scanner(inputFile);
+            if (args.length > 1) {
+                M = Integer.parseInt(args[1]);
+            }
+
+        } else {
+            in = new Scanner(System.in);
+        }
+        String paragraph = "";
+        while (in.hasNextLine()) {
+            String newline = in.nextLine();
+            if (newline.equals("")) break;
+            paragraph += " " + newline;
+        }
+        paragraph = paragraph.trim();
+        String[] strs = paragraph.split("\\s+");
+
+        count(strs, M);
         print(strs);
-
-
     }
 
 
@@ -103,38 +120,38 @@ public class PrintNeatly {
     }
 
 
-    private static String[] getStringArray(String fileName){
-        List<String> list = new ArrayList<>();
-        FileReader fileReader = null;
-        BufferedReader bufferedReader = null;
-        try {
-            fileReader = new FileReader(fileName);
-            bufferedReader = new BufferedReader(fileReader);
-            String line = null;
-            while((line = bufferedReader.readLine())!=null){
-                String[] strs = line.split("\\s+");
-                for(int i=0;i<strs.length;i++){
-                    list.add(strs[i]);
-                }
-            }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            if(bufferedReader!=null){
-                try {
-                    bufferedReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return list.toArray(new String[list.size()]);
-
-    }
+//    private static String[] getStringArray(String fileName){
+//        List<String> list = new ArrayList<>();
+//        FileReader fileReader = null;
+//        BufferedReader bufferedReader = null;
+//        try {
+//            fileReader = new FileReader(fileName);
+//            bufferedReader = new BufferedReader(fileReader);
+//            String line = null;
+//            while((line = bufferedReader.readLine())!=null){
+//                String[] strs = line.split("\\s+");
+//                for(int i=0;i<strs.length;i++){
+//                    list.add(strs[i]);
+//                }
+//            }
+//
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }finally {
+//            if(bufferedReader!=null){
+//                try {
+//                    bufferedReader.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//
+//        return list.toArray(new String[list.size()]);
+//
+//    }
 
     private static void print(String[] strs){
         int length = strs.length;
@@ -202,8 +219,4 @@ public class PrintNeatly {
             }
         }
     }
-
-
-
-
 }
