@@ -1,9 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by xinweiwang on 11/26/16.
@@ -203,9 +200,17 @@ public class PrintNeatly {
         System.out.println();
         int j = newLine.size()-1;
         int num = numSpace.get(j);
-        Set<Integer> ramdonSet = new HashSet<>();
-        while(ramdonSet.size()<num){
-            ramdonSet.add((int)(Math.random()*(newLine.get(j))));
+        Map<Integer,Integer> randomSet = new HashMap<>();
+        int size=0;
+        while(size<num){
+            int key = (int)(Math.random()*(newLine.get(j)));
+            if(randomSet.containsKey(key)){
+                randomSet.put(key,randomSet.get(key)+1);
+            }else{
+                randomSet.put(key,1);
+            }
+            size++;
+
         }
         for(int i =0;i<strs.length;i++){
             if(i == newLine.get(j)){
@@ -221,8 +226,14 @@ public class PrintNeatly {
                     num = numSpace.get(j);
                     //ramdonSet = new HashSet<>();
 
-                    while(ramdonSet.size()<num){
-                        ramdonSet.add((int)(Math.random()*(newLine.get(j)-newLine.get(j+1)-1))+newLine.get(j+1)+1);
+                    while(size<num){
+                        int key = (int)(Math.random()*(newLine.get(j)-newLine.get(j+1)-1))+newLine.get(j+1)+1;
+                        if(randomSet.containsKey(key)){
+                            randomSet.put(key,randomSet.get(key)+1);
+                        }else{
+                            randomSet.put(key,1);
+                        }
+                        size++;
                     }
                     /*
                     System.out.println(ramdonSet.size());
@@ -232,9 +243,14 @@ public class PrintNeatly {
                     */
                 }
             }else {
-                if(ramdonSet.contains(i)) {
-                    System.out.print(strs[i] + " +");
-                    ramdonSet.remove(i);
+                if(randomSet.containsKey(i)) {
+                    System.out.print(strs[i]+" ");
+                    int val = randomSet.get(i);
+                    for(int s=0;s<val;s++){
+                        System.out.print("+");
+                        size--;
+                    }
+                    randomSet.remove(i);
                 }else{
                     System.out.print(strs[i]+" ");
                 }
